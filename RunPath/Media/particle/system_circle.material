@@ -1,0 +1,94 @@
+material progress_circle_mater
+{
+	receive_shadows off
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_write off
+			cull_hardware none
+			cull_software  none
+			texture_unit
+			{
+				//colour_op alpha_blend
+				tex_address_mode clamp 	
+				texture circle_bar_image_f_s.png
+									
+			}
+		}
+	}
+	technique
+	{
+		scheme displace
+		pass
+		{
+			colour_write off
+			depth_write off
+		}
+	}
+}
+material progress_circle_mater_r
+{
+	receive_shadows off
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_write off
+			cull_hardware none
+			cull_software  none
+			texture_unit
+			{
+				//colour_op alpha_blend
+				tex_address_mode clamp 	
+				texture circle_bar_image_f_s_r.png
+									
+			}
+		}
+	}
+	technique
+	{
+		scheme displace
+		pass
+		{
+			colour_write off
+			depth_write off
+		}
+	}
+}
+material system_half_transp
+{
+	receive_shadows off
+	technique
+	{
+		pass
+		{
+			lighting off
+			scene_blend alpha_blend
+			depth_write off
+			cull_hardware none
+			cull_software  none
+			texture_unit
+			{
+				//colour_op alpha_blend
+				tex_address_mode clamp 	
+				texture system_square.png
+									
+			}
+		}
+	}
+	technique
+	{
+		scheme displace
+		pass
+		{
+			colour_write off
+			depth_write off
+		}
+	}
+}
+

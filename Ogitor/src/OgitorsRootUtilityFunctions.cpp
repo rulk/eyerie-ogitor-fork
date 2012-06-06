@@ -1409,7 +1409,7 @@ void OgitorsRoot::ReloadUserResources()
             
             Ogre::String matname =     mRes->getName();
             Ogre::StringUtil::toLowerCase(matname);
-            if(matname.find("sky") != -1 && matname.find("skyboxplane") == -1)
+            if((matname.find("sky") != -1 && matname.find("skyboxplane") == -1) || matname.find("skb") != -1)
                 mSkyboxMaterials.push_back(PropertyOption(mRes->getName(), Ogre::Any(mRes->getName())));
         }
         else if(mRes->getGroup() == "Plants")

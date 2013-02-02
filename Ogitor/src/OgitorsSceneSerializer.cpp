@@ -126,7 +126,7 @@ int COgitorsSceneSerializer::Import(Ogre::String importfile)
     node = docImport.FirstChild("OGITORSCENE");
     if(!node) 
         return SCF_ERRPARSE;
-    element = node->FirstChildElement();
+    
 
     loadmsg = mSystem->Translate("Creating scene objects");
     mSystem->UpdateLoadProgress(10, loadmsg);
@@ -135,6 +135,9 @@ int COgitorsSceneSerializer::Import(Ogre::String importfile)
     Ogre::String objecttype;
     OgitorsPropertyValueMap params;
     OgitorsPropertyValue tmpPropVal;
+    for(int iter_obj = 0;iter_obj<2;iter_obj++)
+    {
+    	element = node->FirstChildElement();
     do
     {
         // Make sure its NON-ZERO
@@ -147,7 +150,9 @@ int COgitorsSceneSerializer::Import(Ogre::String importfile)
         params.clear();
 
         Ogre::String objAttValue;
-
+	if(element->Attribute("loaded_in_side_param") != NULL)
+		continue;
+	Ogre::String parentObjectName = "";
         objAttValue = ValidAttr(element->Attribute("object_id"), "");
         if(objAttValue != "")
         {
@@ -162,6 +167,7 @@ int COgitorsSceneSerializer::Import(Ogre::String importfile)
             tmpPropVal.propType = PROP_STRING;
             tmpPropVal.val = Ogre::Any(objAttValue);
             params.insert(OgitorsPropertyValueMap::value_type("parentnode", tmpPropVal));
+            parentObjectName = objAttValue;
         }
 
         objAttValue = ValidAttr(element->Attribute("name"),"");
@@ -203,6 +209,12 @@ int COgitorsSceneSerializer::Import(Ogre::String importfile)
         }
 
         objecttype = Ogre::any_cast<Ogre::String>(params["typename"].val);
+        CBaseEditor *parentCB = 0;
+        if(parentObjectName != "")
+        {
+        	parentCB = ogRoot->FindObject(parentObjectName);
+        	if(parentCB == NULL) continue;
+        }
         CBaseEditor *result = ogRoot->CreateEditorObject(0, objecttype, params, false, false);
         if(result)
         {
@@ -211,8 +223,11 @@ int COgitorsSceneSerializer::Import(Ogre::String importfile)
             {
                 OgitorsUtils::ReadCustomPropertySet(customprop, result->getCustomProperties());
             }
+            element->SetAttribute("loaded_in_side_param",1);
         }
+        
     } while(element = element->NextSiblingElement());
+    }
 
     ogRoot->AfterLoadScene();
 

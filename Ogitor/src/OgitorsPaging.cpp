@@ -312,7 +312,7 @@ CPagingManagerFactory::CPagingManagerFactory(OgitorsView *view) : CBaseEditorFac
 {
     mTypeName = "Paging Manager Object";
     mEditorType = ETYPE_PAGINGMANAGER;
-    mAddToObjectList = true;
+    mAddToObjectList = false;
     mIcon = "Icons/pagingmanager.svg";
     mCapabilities = CAN_DELETE | CAN_UNDO;
 

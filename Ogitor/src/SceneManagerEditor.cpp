@@ -667,6 +667,11 @@ CSceneManagerEditorFactory::CSceneManagerEditorFactory(OgitorsView *view) : CBas
     OgitorsPropertyDefMap::iterator it = mPropertyDefs.find("layer");
     it->second.setAccess(false, false);
 }
+void CSceneManagerEditorFactory::updateSkyboxMaterials()
+{
+  OgitorsPropertyDef *definition = AddPropertyDefinition("skybox::material","SkyBox::Material","The material of the skybox.",PROP_STRING);
+    definition->setOptions(OgitorsRoot::GetMaterialNames());
+}
 //-----------------------------------------------------------------------------------------
 CBaseEditorFactory *CSceneManagerEditorFactory::duplicate(OgitorsView *view)
 {

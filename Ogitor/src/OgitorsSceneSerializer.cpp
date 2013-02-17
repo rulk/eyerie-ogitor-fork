@@ -50,9 +50,21 @@ int COgitorsSceneSerializer::Import(Ogre::String importfile)
         UTFStringVector extlist;
         extlist.push_back(OTR("Ogitor Scene File"));
         extlist.push_back("*.ogscene");
-        importfile = mSystem->DisplayOpenDialog(OTR("Open"),extlist);
-        if(importfile == "") 
+
+        Ogre::StringVector options;
+        mSystem->GetFileList((mSystem->GetMainRepoPath()+"/ogitor_projects/").c_str(),options,true);
+        Ogre::StringVector opt(options.size());
+        Ogre::String path;
+        for(int i=0;i<options.size();i++)
+        {
+        	Ogre::StringUtil::splitFilename(options[i],opt[i],path);
+        }
+        Ogre::String file;
+        if(mSystem->DisplayRequestValueDialog( DLGDATA_STRINGSELECT,DLGTYPE_YESNO,"select existing project to open:",file,&opt ))
             return SCF_CANCEL;
+
+        importfile = mSystem->GetMainRepoPath()+ "/ogitor_projects/" + file +"/"+file+".ogscene" ;
+        std::cout<<importfile<<std::endl;
     }
 
     Ogre::String filePath = OgitorsUtils::ExtractFilePath(importfile);

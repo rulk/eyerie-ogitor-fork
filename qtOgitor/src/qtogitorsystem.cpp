@@ -29,7 +29,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////*/
-
+#include <Qt/qinputdialog.h>
 #include "qtogitorsystem.h"
 #include "mainwindow.hxx"
 #include "ogrewidget.hxx"
@@ -147,6 +147,29 @@ QtOgitorSystem::QtOgitorSystem(): mGeneralPropsWidget(0), mCustomPropsWidget(0),
     if(!directory.exists())
         directory.setPath("../Projects/");
     mProjectsDirectory = directory.absolutePath();
+    QFile * file = new QFile(".SBWMediarepo");
+    bool bNeedread = true;
+    if(!file->open(QIODevice::ReadOnly))
+    {
+    	delete file;
+    	file = new QFile("~/.SBWMediarepo");
+    	if(!file->open(QIODevice::ReadOnly))
+    	{
+    		delete file;
+    		bNeedread = false;
+    		mRepoPath = DisplayDirectorySelector("SBW Media repository not set, please edit ~/.SBWMediarepo, for now choose location manually").c_str();
+    	}
+
+    }
+    if(bNeedread)
+    {
+		QTextStream in(file);
+		if(!in.atEnd() )
+		{
+			mRepoPath = in.readLine();
+		}
+		delete file;
+    }
     mCalcBlendmapDlg = 0;
 }
 //-------------------------------------------------------------------------------
@@ -158,6 +181,10 @@ QtOgitorSystem::~QtOgitorSystem(void)
 Ogre::String QtOgitorSystem::getProjectsDirectory()
 {
     return mProjectsDirectory.toStdString();
+}
+Ogre::String QtOgitorSystem::GetMainRepoPath()
+{
+	return mRepoPath.toStdString();
 }
 //-------------------------------------------------------------------------------
 void QtOgitorSystem::initTreeIcons()
@@ -325,7 +352,7 @@ void QtOgitorSystem::RenameFile(const Ogre::String &oldname, const Ogre::String 
     QFile::rename(oldname.c_str(), newname.c_str());
 }
 //-------------------------------------------------------------------------------
-void QtOgitorSystem::GetFileList(Ogre::String path, Ogre::StringVector &list)
+void QtOgitorSystem::GetFileList(Ogre::String path, Ogre::StringVector &list,bool onlyDir)
 {
     QString srcpath(Ogitors::OgitorsUtils::ExtractFilePath(path).c_str());
     QString filespec = path.c_str();
@@ -336,7 +363,12 @@ void QtOgitorSystem::GetFileList(Ogre::String path, Ogre::StringVector &list)
 
     QStringList speclist;
     speclist << filespec;
-    QDirIterator it(srcpath,speclist,QDir::Files);
+    QDir::Filters filter  = QDir::Files;
+    if(onlyDir)
+    {
+    	filter = QDir::AllDirs | QDir::NoDotAndDotDot;
+    }
+    QDirIterator it(srcpath,speclist,filter);
     while(it.hasNext())
     {
         QString filename = it.next();
@@ -490,6 +522,50 @@ Ogre::String QtOgitorSystem::DisplaySaveDialog(Ogre::UTFString title, Ogitors::U
         settings.endGroup();
     }
     return path.toStdString();
+}
+Ogitors::DIALOGRET    QtOgitorSystem::DisplayRequestValueDialog(Ogitors::REQUESTDATATYPE dlgData,Ogitors::DIALOGTYPE dlgType,
+               		const Ogre::String & message,Ogre::String & out,const Ogre::StringVector * select)
+{
+	bool ok;
+	switch(dlgData)
+	{
+	case Ogitors::DLGDATA_STRING:
+		out = QInputDialog::getText(QApplication::activeWindow(),"Select String",message.c_str(), QLineEdit::Normal,out.c_str(),&ok).toStdString();
+		break;
+	case Ogitors::DLGDATA_INT:
+	{
+		std::stringstream inInt;
+		inInt<<QInputDialog::getInt(QApplication::activeWindow(),"Select int",message.c_str(),0, -2147483647,2147483647,1,&ok);
+		out = inInt.str();
+	}
+			break;
+	case Ogitors::DLGDATA_DOUBLE:
+	{
+		std::stringstream inD;
+		inD<<QInputDialog::getDouble(QApplication::activeWindow(),"Select double",message.c_str(),0, -2147483647,2147483647,2,&ok);
+		out = inD.str();
+	}
+			break;
+	case Ogitors::DLGDATA_STRINGSELECT:
+	{
+		QStringList list;
+		if(select)
+		{
+			Ogre::StringVector::const_iterator it =  select->begin();
+			while(it != select->end())
+			{
+				list.append(it->c_str());
+				it++;
+			}
+		}
+		out = QInputDialog::getItem(QApplication::activeWindow(),"Select",message.c_str(), list,0,false,&ok).toStdString();
+	}
+			break;
+	default: return Ogitors::DLGRET_CANCEL;
+	}
+	if(ok)
+		return Ogitors::DLGRET_YES;
+	return Ogitors::DLGRET_CANCEL;
 }
 //-------------------------------------------------------------------------------
 void QtOgitorSystem::UpdateLoadProgress(float percentage, Ogre::UTFString msg)

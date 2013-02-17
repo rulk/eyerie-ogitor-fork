@@ -1403,13 +1403,16 @@ void OgitorsRoot::ReloadUserResources()
     while(it.hasMoreElements())
     {
         mRes = it.getNext();
-        if(mRes->getGroup() == "ProjectResources")
+	Ogre::String matname =     mRes->getName();
+        Ogre::StringUtil::toLowerCase(matname);
+	if(matname.find("skb") != -1)
+	{
+	   mSkyboxMaterials.push_back(PropertyOption(mRes->getName(), Ogre::Any(mRes->getName())));
+	}
+        else if(mRes->getGroup() == "ProjectResources")
         {
-            mMaterialNames.push_back(PropertyOption(mRes->getName(), Ogre::Any(mRes->getName())));
-            
-            Ogre::String matname =     mRes->getName();
-            Ogre::StringUtil::toLowerCase(matname);
-            if((matname.find("sky") != -1 && matname.find("skyboxplane") == -1) || matname.find("skb") != -1)
+            mMaterialNames.push_back(PropertyOption(mRes->getName(), Ogre::Any(mRes->getName())));    
+            if((matname.find("sky") != -1 && matname.find("skyboxplane") == -1) )
                 mSkyboxMaterials.push_back(PropertyOption(mRes->getName(), Ogre::Any(mRes->getName())));
         }
         else if(mRes->getGroup() == "Plants")
@@ -1549,12 +1552,15 @@ void OgitorsRoot::PrepareProjectResources()
         while(it.hasMoreElements())
         {
             mRes = it.getNext();
+	    Ogre::String matname =     mRes->getName();
+	    Ogre::StringUtil::toLowerCase(matname);
+	    if(matname.find("skb") != -1)
+	    {
+	      mSkyboxMaterials.push_back(PropertyOption(mRes->getName(), Ogre::Any(mRes->getName())));
+	    }
             if(mRes->getGroup() == "ProjectResources")
             {
                 mMaterialNames.push_back(PropertyOption(mRes->getName(), Ogre::Any(mRes->getName())));
-                
-                Ogre::String matname =     mRes->getName();
-                Ogre::StringUtil::toLowerCase(matname);
                 if(matname.find("sky") != -1 && matname.find("skyboxplane") == -1)
                     mSkyboxMaterials.push_back(PropertyOption(mRes->getName(), Ogre::Any(mRes->getName())));
             }

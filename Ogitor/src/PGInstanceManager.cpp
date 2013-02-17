@@ -826,7 +826,7 @@ CPGInstanceManagerFactory::CPGInstanceManagerFactory(OgitorsView *view) : CBaseE
 {
     mTypeName = "PGInstance Manager Object";
     mEditorType = ETYPE_CUSTOM_MANAGER;
-    mAddToObjectList = true;
+    mAddToObjectList = false;
     mRequirePlacement = false;
     mIcon = "Icons/pagedgeometry.svg";
     mCapabilities = CAN_UNDO | CAN_DELETE;

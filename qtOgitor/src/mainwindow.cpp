@@ -971,6 +971,14 @@ void MainWindow::addMenus()
     menuEdit->addAction(actOpenPreferences);
 
 
+    menuGit = new QMenu(tr("Eyerie Synchr"), mMenuBar);
+    menuGit->setObjectName(QString::fromUtf8("menuGit"));
+    mMenuBar->addAction(menuGit->menuAction());
+    menuGit->addAction(actGitPull);
+    menuGit->addAction(actGitPush);
+    menuGit->addAction(gdocsPull);
+    menuGit->addAction(serverRestart);
+
     menuTools = new QMenu(tr("Tools"), mMenuBar);
     menuTools->setObjectName(QString::fromUtf8("menuTools"));
     mMenuBar->addAction(menuTools->menuAction());

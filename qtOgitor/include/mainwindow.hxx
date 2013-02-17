@@ -178,6 +178,12 @@ public:
     QAction*  actEditCopyToTemplate;
     QAction*  actEditCopyToTemplateWithChildren;
 
+    //git actions
+    QAction* actGitPull;
+    QAction* actGitPush;
+    QAction* gdocsPull;
+    QAction* serverRestart;
+
     QMenu*    menuFile;
     QMenu*    menuImport;
     QMenu*    menuExport;
@@ -196,6 +202,7 @@ public:
     QMenu*    menuRecentFiles;
     QMenu*    menuDefineSelectionList;
     QMenu*    menuSelectSelectionList;
+    QMenu*	  menuGit;
     QAction*  mSelectActions[20];
 
     QSlider*  mCameraSpeedSlider;
@@ -306,6 +313,11 @@ public Q_SLOTS:
     void decreaseGizmoScale();
     void onPlayerRunPause();
     void onPlayerStop();
+
+    void onGitPull();
+    void onGitPush();
+    void onGdocs();
+    void onServerRestart();
 
 private:
     SceneViewWidget         *mSceneViewWidget;

@@ -54,13 +54,13 @@ ObjectsViewWidget::ObjectsViewWidget(QWidget *parent) :
     mDragData.Parameters.clear();
 
     listWidget = new QListWidget(this);
-    listWidget->setViewMode(QListView::IconMode);
-    listWidget->setGridSize(QSize(64,70));
-    listWidget->setFlow(QListView::LeftToRight);
+    listWidget->setViewMode(QListView::ListMode);
+    //listWidget->setGridSize(QSize(64,70));
+    listWidget->setFlow(QListView::TopToBottom);
     listWidget->setIconSize(QSize(32,32));
     listWidget->setDragDropMode(QAbstractItemView::DragOnly);
-    listWidget->setWordWrap(true);
-    
+    listWidget->setWordWrap(false);
+    listWidget->setUniformItemSizes(true);
     QVBoxLayout *boxlayout = new QVBoxLayout(this);
     boxlayout->setMargin(0);
     boxlayout->addWidget(listWidget);
@@ -77,8 +77,8 @@ ObjectsViewWidget::~ObjectsViewWidget()
 //----------------------------------------------------------------------------------------
 void ObjectsViewWidget::resizeEvent(QResizeEvent* evt)
 {
-    if(listWidget)
-        listWidget->setGridSize(QSize(64,70));
+ /*   if(listWidget)
+        listWidget->setGridSize(QSize(64,70));*/
 }
 //----------------------------------------------------------------------------------------
 void ObjectsViewWidget::updateView()
@@ -97,8 +97,8 @@ void ObjectsViewWidget::updateView()
             bModified = true;
         }
     }
-    if(bModified)
-        listWidget->setGridSize(QSize(64,70));
+   /* if(bModified)
+        listWidget->setGridSize(QSize(64,70));*/
 }
 //----------------------------------------------------------------------------------------
 void ObjectsViewWidget::prepareView()
@@ -133,7 +133,7 @@ void ObjectsViewWidget::prepareView()
         it++;
       }
 
-    listWidget->setGridSize(QSize(64,70));
+   // listWidget->setGridSize(QSize(64,70));
 
     mTimer = new QTimer(this);
     mTimer->setInterval(1000);

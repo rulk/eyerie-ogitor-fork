@@ -207,7 +207,14 @@ namespace Ogitors
         DLGTYPE_YESNO = 1,          /** "Yes/No" confirmation dialog type */
         DLGTYPE_YESNOCANCEL = 2     /** "Yes/No/Cancel" confirmation dialog type */
     };
-    
+    /** Request data dialog **/
+    enum REQUESTDATATYPE
+    {
+    	DLGDATA_STRING = 0,
+    	DLGDATA_INT = 1,
+    	DLGDATA_DOUBLE = 2,
+    	DLGDATA_STRINGSELECT =3
+    };
     /** Mouse cursor type enumeration */
     enum OgitorsMouseCursorType
     {

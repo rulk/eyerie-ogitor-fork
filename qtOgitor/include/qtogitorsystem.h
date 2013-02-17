@@ -63,21 +63,25 @@ public:
     void initTreeIcons();
 
     Ogre::String getProjectsDirectory();
+    Ogre::String GetMainRepoPath();
     bool FileExists(const Ogre::String& filename);
     bool CopyFile(Ogre::String source, Ogre::String destination);
     bool CopyFilesEx(Ogre::String source, Ogre::String destination);
     bool MakeDirectory(Ogre::String dirname);
     void DeleteFile(const Ogre::String &file);
     void RenameFile(const Ogre::String &oldname, const Ogre::String &newname);
-    void GetFileList(Ogre::String path, Ogre::StringVector &list);
+    void GetFileList(Ogre::String path, Ogre::StringVector &list,bool onlyDir = false);
     Ogre::String DisplayDirectorySelector(Ogre::UTFString title);
     Ogre::String DisplayOpenDialog(Ogre::UTFString title, Ogitors::UTFStringVector ExtensionList);
     Ogre::String DisplaySaveDialog(Ogre::UTFString title, Ogitors::UTFStringVector ExtensionList);
     Ogitors::DIALOGRET DisplayMessageDialog(Ogre::UTFString msg, Ogitors::DIALOGTYPE dlgType);
+    Ogitors::DIALOGRET    DisplayRequestValueDialog(Ogitors::REQUESTDATATYPE dlgData,Ogitors::DIALOGTYPE dlgType,
+                   		const Ogre::String & message,Ogre::String & out,const Ogre::StringVector * select = NULL );
     bool DisplayTerrainDialog(Ogre::NameValuePairList &params);
     bool DisplayImportHeightMapDialog(Ogre::NameValuePairList &params);
     bool DisplayCalculateBlendMapDialog(Ogre::NameValuePairList &params);
     void UpdateLoadProgress(float percentage, Ogre::UTFString msg);
+
     Ogre::UTFString Translate(Ogre::String& str);
     Ogre::UTFString Translate(const char * str);
 
@@ -118,6 +122,7 @@ private:
     OgreWidget                  *mRenderViewWidget;
     std::map<unsigned int, QString> mIconList;
     QString                      mProjectsDirectory;
+    QString				         mRepoPath;
     CalculateBlendMapDialog     *mCalcBlendmapDlg;
 };
 

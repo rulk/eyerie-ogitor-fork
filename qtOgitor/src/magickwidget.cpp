@@ -29,7 +29,7 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////*/
-#ifdef OGITOR_EXPERIMENTAL_INTERFACE
+//#ifdef OGITOR_EXPERIMENTAL_INTERFACE
 
 #include <QtGui/QPainter>
 #include <QtCore/QEvent>
@@ -41,6 +41,7 @@
 #include <QtGui/QDesktopServices>
 #include "magickwidget.hxx"
 #include "mainwindow.hxx"
+#include "qtogitorsystem.h"
 #include "qtpropertymanager.h"
 #include "qteditorfactory.h"
 #include "complexproperties.hxx"
@@ -358,4 +359,4 @@ void MagickWidget::loadMesh(Ogre::MeshPtr pMesh)
     mDisplayWidget->setImage(QString(imagefile.c_str()));
 }
 //-------------------------------------------------------------------------------------------
-#endif
+//#endif

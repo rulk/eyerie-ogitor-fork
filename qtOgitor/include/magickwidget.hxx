@@ -29,11 +29,12 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 ////////////////////////////////////////////////////////////////////////////////*/
-#ifdef OGITOR_EXPERIMENTAL_INTERFACE
+//#ifdef OGITOR_EXPERIMENTAL_INTERFACE
 
 #ifndef __MAGICKWIDGET_HXX__
 #define __MAGICKWIDGET_HXX__
-
+#include <QtCore/QObject>
+#include <QtCore/QtCore>
 #include <QtGui/QApplication>
 #include <QtGui/QWidget>
 #include <QtGui/QToolBar>
@@ -131,4 +132,4 @@ protected:
 
 #endif // __MAGICKWIDGET_HXX__
 
-#endif // OGITOR_EXPERIMENTAL_INTERFACE
+//#endif // OGITOR_EXPERIMENTAL_INTERFACE

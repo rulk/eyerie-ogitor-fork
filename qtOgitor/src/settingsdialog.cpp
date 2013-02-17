@@ -64,7 +64,7 @@ QDialog(parent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint)
 
    mOptions = options;
 
-   mProjectDirTextBox->setText(mOptions->ProjectDir.c_str());
+   mProjectDirTextBox->setText((OgitorsSystem::getSingletonPtr()->GetMainRepoPath()+"/ogitor_projects/").c_str());
    mProjectNameTextBox->setText(mOptions->ProjectName.c_str());
    mSceneMgrNameMenu->addItem("OctreeSceneManager");
    mSceneMgrNameMenu->setCurrentIndex(0);
@@ -96,6 +96,28 @@ QDialog(parent, Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint)
       {
          addResourceLocation(RES_LOC_ZIP, value);
       }
+   }
+   if(mOptions->IsNewProject)
+   {
+	   QString path = (OgitorsSystem::getSingletonPtr()->GetMainRepoPath()+"/Media/").c_str();
+	   if(!path.isEmpty())
+	     {
+
+
+	        addResourceLocation(RES_LOC_DIR, path);
+
+	        QDirIterator it(path, QDir::AllDirs, QDirIterator::Subdirectories);
+	        while (it.hasNext())
+	        {
+	           QString dir = it.next();
+	           QFileInfo inf(dir);
+
+	           if(!dir.endsWith("."))
+	           {
+	              addResourceLocation(RES_LOC_DIR, dir);
+	           }
+	        }
+	     }
    }
    mResourceListBox->installEventFilter(this);
 

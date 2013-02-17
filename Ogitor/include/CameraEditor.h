@@ -51,7 +51,8 @@ namespace Ogitors
         CVM_LOCAL_FRONT = 10,
         CVM_LOCAL_BACK = 11,
         CVM_LOCAL_TOP = 12,
-        CVM_LOCAL_BOTTOM = 13
+        CVM_LOCAL_BOTTOM = 13,
+	CVM_GLOBAL_SBW = 14
     };
 
     //! Camera editor class

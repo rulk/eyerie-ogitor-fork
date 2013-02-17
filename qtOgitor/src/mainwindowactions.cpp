@@ -418,6 +418,28 @@ void MainWindow::addActions()
     connect(actToggleWorldSpaceGizmo, SIGNAL(triggered()), this, SLOT(toggleWorldSpaceGizmo()));
     connect(actToggleWalkAround, SIGNAL(triggered()), this, SLOT(toggleWalkAround()));
 
+
+    actGitPull = new QAction(tr("git Pull"), this);
+    actGitPull->setIcon(QIcon(":/icons/gitdown.svg"));
+    actGitPull->setStatusTip(tr("will try to pull changes from git"));
+
+    actGitPush = new QAction(tr("git commit & push"), this);
+    actGitPush->setIcon(QIcon(":/icons/gitup.svg"));
+    actGitPush->setStatusTip(tr("will try to push your changes to center repositiry"));
+
+    gdocsPull= new QAction(tr("synch gamplay settings"), this);
+    gdocsPull->setIcon(QIcon(":/icons/gitdown.svg"));
+    gdocsPull->setStatusTip(tr("will try to connect to google docs and download files"));
+
+    serverRestart = new QAction(tr("restart server"), this);
+    serverRestart->setIcon(QIcon(":/icons/gnobots2.svg"));
+    serverRestart->setStatusTip(tr("will restatrt server with latest settings and maps from repository"));
+
+    connect(actGitPull, SIGNAL(triggered()), this, SLOT(onGitPull()));
+    connect(actGitPush, SIGNAL(triggered()), this, SLOT(onGitPush()));
+    connect(gdocsPull, SIGNAL(triggered()), this, SLOT(onGdocs()));
+    connect(serverRestart, SIGNAL(triggered()), this, SLOT(onServerRestart()));
+
     QMetaObject::connectSlotsByName(this);
 }
 //------------------------------------------------------------------------------
@@ -1618,3 +1640,50 @@ void MainWindow::onPlayerStop()
     OgitorsRoot::getSingletonPtr()->SetRunState(RS_STOPPED);
 }
 //------------------------------------------------------------------------------
+void MainWindow::onGitPull()
+{
+	std::stringstream str;
+	Ogre::String changes;
+
+	str<<"xterm -e \"cd "<<OgitorsSystem::getSingletonPtr()->GetMainRepoPath()<<" ";
+	str<<" && git pull ;read \"";
+
+	QProcess *executable = new QProcess(QApplication::activeWindow());
+	executable->execute(str.str().c_str());
+	std::cout<<str.str().c_str()<<std::endl;
+}
+void MainWindow::onGitPush()
+{
+	std::stringstream str;
+	std::stringstream str2;
+	Ogre::String changes;
+	if(OgitorsSystem::getSingletonPtr()->DisplayRequestValueDialog(DLGDATA_STRING,DLGTYPE_YESNO,
+				"enter changes please",changes))
+	{
+		return;
+	}
+
+
+	str<<"xterm -e \"cd "<<OgitorsSystem::getSingletonPtr()->GetMainRepoPath()<<" ";
+	str<<" && git add ./* ";
+	str<<" && git commit -a -m \\\""<<changes<<"\\\" ;read \"";
+	std::cout<<str.str().c_str()<<std::endl;
+	QProcess *executable = new QProcess(QApplication::activeWindow());
+	executable->execute(str.str().c_str());
+
+	str2<<"xterm -e \"cd "<<OgitorsSystem::getSingletonPtr()->GetMainRepoPath()<<" ";
+	str2<<" && git push;read\"";
+	executable = new QProcess(QApplication::activeWindow());
+	executable->execute(str2.str().c_str());
+	std::cout<<str2.str().c_str()<<std::endl;
+		/*OgitorsSystem::getSingletonPtr()->GetMainRepoPath();
+		xterm -e "cd ~/src/space-bot-media/ && git add ./* && git commit -a -m \"Data message\" && git push"*/
+}
+void MainWindow::onGdocs()
+{
+
+}
+void MainWindow::onServerRestart()
+{
+
+}

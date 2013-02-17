@@ -88,7 +88,11 @@ namespace Ogitors
 
         inline Ogre::SphereSceneQuery *getSphereQuery() { return mSphereSceneQuery; };
         inline Ogre::RaySceneQuery    *getRayQuery() { return mRaySceneQuery; };
-
+	void setSkyBox(const Ogre::String & material,Ogre::Real distance,bool active){mSkyBoxMaterial->set(material);mSkyBoxDistance->set(distance);mSkyBoxActive->set(active);}
+	Ogre::String getSkyBoxMaterial(){return mSkyBoxMaterial->get();}
+	void setAmbient(const Ogre::ColourValue & color){mAmbient->set(color);}
+	Ogre::ColourValue getAmbient(){return mAmbient->get();}
+	
     protected:
         Ogre::SceneManager         *mHandle;                        /** Scene manager handle */
         Ogre::ShadowCameraSetupPtr  mPSSMSetup;
@@ -318,7 +322,7 @@ namespace Ogitors
         static PropertyOptionsVector *getFogModes() { return &mFogModes; }
         static PropertyOptionsVector *getTextureMapSizes() { return &mTextureMapSizes; }
         static PropertyOptionsVector *getShadowTechniqueNames() { return &mShadowTechniqueNames; }
-
+	void updateSkyboxMaterials();
     protected:
         static PropertyOptionsVector mFogModes;             /** Fog mode(s) property list */
         static PropertyOptionsVector mTextureMapSizes;      /** Texture Map Sizes property list */

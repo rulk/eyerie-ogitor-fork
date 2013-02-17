@@ -559,6 +559,7 @@ CCameraEditorFactory::CCameraEditorFactory(OgitorsView *view) : CBaseEditorFacto
     mCameraViewModes.push_back(PropertyOption("LOCAL_BACK", Ogre::Any((int)CVM_LOCAL_BACK)));
     mCameraViewModes.push_back(PropertyOption("LOCAL_TOP", Ogre::Any((int)CVM_LOCAL_TOP)));
     mCameraViewModes.push_back(PropertyOption("LOCAL_BOTTOM", Ogre::Any((int)CVM_LOCAL_BOTTOM)));
+    mCameraViewModes.push_back(PropertyOption("Space Bot Wars", Ogre::Any((int)CVM_GLOBAL_SBW)));
 
     OgitorsPropertyDef *definition;
 

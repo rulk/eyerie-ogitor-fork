@@ -83,6 +83,8 @@ namespace Ogitors
         * @return full path to the Ogitor' Projects directory
         */
         virtual Ogre::String getProjectsDirectory() = 0;
+
+        virtual Ogre::String GetMainRepoPath() = 0;
         /**
         * Deletes specified file
         * @param file full path to the file, including file name
@@ -99,7 +101,7 @@ namespace Ogitors
         * @param path path which is to be enumerated with files
         * @param list a list to place file names into
         */
-        virtual void GetFileList(Ogre::String path, Ogre::StringVector &list) = 0;
+        virtual void GetFileList(Ogre::String path, Ogre::StringVector &list,bool onlyDir = false) = 0;
         /**
         * Displays "Select Directory" dialog
         * @param title title of the dialog
@@ -145,6 +147,12 @@ namespace Ogitors
         * @return true if dialog' result was accepted, otherwise false
         */
         virtual bool         DisplayCalculateBlendMapDialog(Ogre::NameValuePairList &params) = 0;
+        /**
+         * Displays dialog to request single value from user
+         * @return dialog result
+         */
+        virtual DIALOGRET    DisplayRequestValueDialog(REQUESTDATATYPE dlgData,DIALOGTYPE dlgType,
+        		const Ogre::String & message,Ogre::String & out,const Ogre::StringVector * select = NULL ) = 0;
         /**
         * Supplies feedback about loading progress 
         * @param percentage The completion percentage
@@ -291,6 +299,8 @@ namespace Ogitors
         * @copydoc OgitorsSystem::getProjectsDirectory()
         */
         virtual Ogre::String getProjectsDirectory() {return "./";};
+
+        virtual Ogre::String GetMainRepoPath(){return "./";}
         /**
         * @copydoc OgitorsSystem::DeleteFile(const Ogre::String&)
         */
@@ -302,7 +312,7 @@ namespace Ogitors
         /**
         * @copydoc OgitorsSystem::GetFileList(Ogre::String, Ogre::StringVector&)
         */
-        virtual void GetFileList(Ogre::String path, Ogre::StringVector &list) {list.clear();};
+        virtual void GetFileList(Ogre::String path, Ogre::StringVector &list,bool onlyDir = false) {list.clear();};
         /**
         * @copydoc OgitorsSystem::DisplayDirectorySelector(Ogre::UTFString)
         */
@@ -319,6 +329,9 @@ namespace Ogitors
         * @copydoc OgitorsSystem::DisplayMessageDialog(Ogre::UTFString, DIALOGTYPE)
         */
         virtual DIALOGRET    DisplayMessageDialog(Ogre::UTFString msg, DIALOGTYPE dlgType) {return DLGRET_CANCEL;};
+
+        virtual DIALOGRET    DisplayRequestValueDialog(REQUESTDATATYPE dlgData,DIALOGTYPE dlgType,
+               		const Ogre::String & message,Ogre::String & out,const Ogre::StringVector * select = NULL ) {return DLGRET_CANCEL;};
         /**
         * @copydoc OgitorsSystem::DisplayTerrainDialog(Ogre::NameValuePairList&)
         */
